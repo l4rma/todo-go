@@ -5,7 +5,8 @@ Testing out lambda functions in Go with Terraform
 ## DynamoDB
 Tablename: tasks
 
-id|title|description|completed
+|id|title|description|completed|
+|---|---|---|---|
 
 ## Lambda
 ### create_task
