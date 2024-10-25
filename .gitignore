@@ -1,0 +1,11 @@
+terraform.tfstate*
+*.zip
+.terraform*
+.terraform/*
+*.iml
+*.ipr
+*.iws
+.idea/
+/build/
+/dist/
+/out/
