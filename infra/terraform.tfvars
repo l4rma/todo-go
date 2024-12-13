@@ -1,3 +1,3 @@
-aws_region = "eu-central-1"
-aws_profile = "default"
+aws_region = "eu-west-1"
+aws_profile = "larma"
 

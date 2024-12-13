@@ -45,7 +45,8 @@ data "aws_iam_policy_document" "lambda_policies" {
   statement {
     effect = "Allow"
     actions = [
-      "dynamodb:PutItem"
+      "dynamodb:PutItem",
+      "dynamodb:GetItem"
     ]
     resources = [
       aws_dynamodb_table.dynamodb-task-table.arn
