@@ -1,3 +1,4 @@
+# dynamodb.tf
 resource "aws_dynamodb_table" "dynamodb-task-table" {
   name           = "tasks"
   read_capacity  = 5
