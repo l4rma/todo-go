@@ -61,5 +61,5 @@ resource "aws_api_gateway_deployment" "example_deployment" {
 }
 
 output "api_endpoint" {
-  value = aws_api_gateway_deployment.example_deployment.invoke_url
+  value = "${aws_api_gateway_deployment.example_deployment.invoke_url}/task"
 }
