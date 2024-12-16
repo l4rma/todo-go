@@ -1,6 +1,11 @@
 # Serverless with Go
 
-Testing out lambda functions in Go with Terraform
+A simple API for creating tasks
+![Flow diagram](./aws-flow.drawio.png)
+
+## Lambda
+- **Create**: Creates a task and puts it into DynamoDB
+- **FindTaskById**: Retrieves a task from DynamoDB based on ID
 
 ## DynamoDB
 Tablename: tasks
@@ -8,18 +13,22 @@ Tablename: tasks
 |id|title|description|completed|
 |---|---|---|---|
 
-## Lambda
-### create_task
-Creates a task and puts it into DynamoDB
+## Api Gateway
+- Path /task-api/task:
+    - GET
+    - POST
 
 ## Terraform resources
+- Lambda function
+- Zip source code
+- DynamoDB table
+- Api Gateway
 - Policies:
     - sts:AssumeRole
     - logs:CreateLogGroup
     - logs:CreateLogStream
     - logs:PutLogEvents
     - dynamodb:PutItem
-- Zip source code
-- Lambda function
-- DynamoDB table
+    - dynamodb:GetItem
+    - lambda:InvokeFunction
 
