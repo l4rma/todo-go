@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 	"github.com/google/uuid"
-	"github.com/l4rma/todo-go/internal/db/entity"
+	"github.com/l4rma/todo-go/pkg/db/entity"
 )
 
 var (
@@ -53,18 +53,15 @@ func (*dynamodbRepository) Save(task *entity.Task) (*entity.Task, error) {
 	return task, err
 }
 
-func (*dynamodbRepository) FindById(id string, title string) (*entity.Task, error) {
+func (*dynamodbRepository) FindById(id string) (*entity.Task, error) {
 	task := &entity.Task{}
 
-	log.Printf("Getting item from table: '%s' with id: '%s' and title: '%s'", TableName, id, title)
+	log.Printf("Getting item from table: '%s' with id: '%s'", TableName, id)
 
 	input := &dynamodb.GetItemInput{
 		Key: map[string]*dynamodb.AttributeValue{
 			"id": {
 				S: aws.String(id),
-			},
-			"title": {
-				S: aws.String(title),
 			},
 		},
 		TableName: aws.String(TableName),

@@ -5,7 +5,7 @@ A simple API for creating tasks
 
 ## Lambda
 - **Create**: Creates a task and puts it into DynamoDB
-- **FindTask**: Retrieves a task from DynamoDB based on keys
+- **FindTaskById**: Retrieves a task from DynamoDB based on ID
 
 ## DynamoDB
 Tablename: tasks

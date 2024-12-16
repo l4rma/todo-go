@@ -6,13 +6,15 @@ import (
 	"net/http"
 
 	"github.com/aws/aws-lambda-go/events"
-	"github.com/l4rma/todo-go/internal/db/entity"
-	"github.com/l4rma/todo-go/internal/service"
+	"github.com/l4rma/todo-go/pkg/db/entity"
+	"github.com/l4rma/todo-go/pkg/db/repository"
+	"github.com/l4rma/todo-go/pkg/service"
 )
 
 var (
-	ErrorMethodNotAllowed string = "method not allowed"
-	taskService           service.TaskService
+	ErrorMethodNotAllowed string                    = "method not allowed"
+	taskRepository        repository.TaskRepository = repository.NewDynamoDBRepository()
+	taskService           service.TaskService       = service.NewTaskService(taskRepository)
 )
 
 func HandleRequest(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
@@ -21,9 +23,8 @@ func HandleRequest(request events.APIGatewayProxyRequest) (events.APIGatewayProx
 	switch request.HTTPMethod {
 	case "GET":
 		id := request.QueryStringParameters["id"]
-		title := request.QueryStringParameters["title"]
 
-		task, err := taskService.FindbyId(id, title)
+		task, err := taskService.FindbyId(id)
 		if err != nil {
 			log.Printf("Error: %v", err)
 		}

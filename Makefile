@@ -12,6 +12,7 @@ tidy:
 
 build: tidy
 	@GOARCH=amd64 GOOS=linux go build -tags lambda.norpc -o ${BINARY_NAME} ${APP}
+	@echo "Created binary file ${BINARY_NAME}"
 	@#zip myLambda.zip ${BINARY_NAME}
 	@#chmod 755 myLambda.zip
 

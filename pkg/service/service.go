@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 
 	"github.com/aws/aws-lambda-go/events"
-	"github.com/l4rma/todo-go/internal/db/entity"
-	"github.com/l4rma/todo-go/internal/db/repository"
+	"github.com/l4rma/todo-go/pkg/db/entity"
+	"github.com/l4rma/todo-go/pkg/db/repository"
 )
 
 var (
@@ -16,7 +16,7 @@ type TaskService interface {
 	// Validate(book *entity.Task) error
 	Create(book *entity.Task) (*entity.Task, error)
 	// FindAll() ([]*entity.Task, error)
-	FindbyId(id string, title string) (*entity.Task, error)
+	FindbyId(id string) (*entity.Task, error)
 	// Delete(id int64) error
 }
 
@@ -27,8 +27,8 @@ func NewTaskService(repo repository.TaskRepository) TaskService {
 	return &service{}
 }
 
-func (*service) FindbyId(id string, title string) (*entity.Task, error) {
-	return taskRepo.FindById(id, title)
+func (*service) FindbyId(id string) (*entity.Task, error) {
+	return taskRepo.FindById(id)
 }
 
 func (*service) Create(task *entity.Task) (*entity.Task, error) {
