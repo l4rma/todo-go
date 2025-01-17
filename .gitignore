@@ -10,3 +10,6 @@ terraform.tfstate*
 /dist/
 /out/
 bootstrap
+.aws-sam-iacs/
+.aws-sam/
+

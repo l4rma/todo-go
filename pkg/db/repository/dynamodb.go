@@ -78,3 +78,24 @@ func (*dynamodbRepository) FindById(id string) (*entity.Task, error) {
 	}
 	return task, err
 }
+
+func (*dynamodbRepository) FindAll() ([]*entity.Task, error) {
+	tasks := []*entity.Task{}
+
+	log.Printf("Getting all items from table: '%s'", TableName)
+
+	input := &dynamodb.ScanInput{
+		TableName: aws.String(TableName),
+	}
+
+	result, err := db.Scan(input)
+	if err != nil {
+		log.Fatalf("Got error calling Scan: %s", err)
+	}
+
+	err = dynamodbattribute.UnmarshalListOfMaps(result.Items, &tasks)
+	if err != nil {
+		log.Fatalf("Failed to unmarshal event: %v", err)
+	}
+	return tasks, err
+}

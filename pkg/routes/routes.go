@@ -24,6 +24,15 @@ func HandleRequest(request events.APIGatewayProxyRequest) (events.APIGatewayProx
 	case "GET":
 		id := request.QueryStringParameters["id"]
 
+		if id == "" {
+			tasks, err := taskService.FindAll()
+			if err != nil {
+				log.Printf("Error: %v", err)
+			}
+
+			return response(200, tasks)
+		}
+
 		task, err := taskService.FindbyId(id)
 		if err != nil {
 			log.Printf("Error: %v", err)

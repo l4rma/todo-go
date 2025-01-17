@@ -15,7 +15,7 @@ var (
 type TaskService interface {
 	// Validate(book *entity.Task) error
 	Create(book *entity.Task) (*entity.Task, error)
-	// FindAll() ([]*entity.Task, error)
+	FindAll() ([]*entity.Task, error)
 	FindbyId(id string) (*entity.Task, error)
 	// Delete(id int64) error
 }
@@ -27,6 +27,10 @@ func NewTaskService(repo repository.TaskRepository) TaskService {
 	return &service{}
 }
 
+func (*service) FindAll() ([]*entity.Task, error) {
+	return taskRepo.FindAll()
+}
+
 func (*service) FindbyId(id string) (*entity.Task, error) {
 	return taskRepo.FindById(id)
 }
@@ -34,7 +38,6 @@ func (*service) FindbyId(id string) (*entity.Task, error) {
 func (*service) Create(task *entity.Task) (*entity.Task, error) {
 	return taskRepo.Save(task)
 }
-
 func response(statusCode int, body interface{}) (events.APIGatewayProxyResponse, error) {
 	jsonBody, _ := json.Marshal(body)
 	return events.APIGatewayProxyResponse{Body: string(jsonBody), StatusCode: statusCode}, nil
