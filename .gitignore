@@ -10,5 +10,11 @@ terraform.tfstate*
 /dist/
 /out/
 bootstrap
+<<<<<<< HEAD
 .aws-sam
 .aws-sam-iacs
+=======
+.aws-sam-iacs/
+.aws-sam/
+
+>>>>>>> cf9fd413ae4520dbbaf368d98e3ff339fd30a80c

@@ -32,7 +32,8 @@ data "aws_iam_policy_document" "lambda_policies" {
     effect = "Allow"
     actions = [
       "dynamodb:PutItem",
-      "dynamodb:GetItem"
+      "dynamodb:GetItem",
+      "dynamodb:Scan"
     ]
     resources = [
       aws_dynamodb_table.dynamodb-task-table.arn
@@ -78,6 +79,12 @@ resource "aws_lambda_function" "my_lambda" {
   }
 }
 
+locals {
+  lambda_src_path = "../cmd/task-api/"
+  building_path = "./"
+  lambda_code_filename = "lambda_function_payload.zip"
+}
+
 resource "null_resource" "sam_metadata_aws_lambda_function_my_lambda" {
     triggers = {
         resource_name = "aws_lambda_function.my_lambda"
@@ -85,10 +92,4 @@ resource "null_resource" "sam_metadata_aws_lambda_function_my_lambda" {
         original_source_code = "${local.lambda_src_path}"
         built_output_path = "./lambda_function_payload.zip"
     }
-}
-
-locals {
-  lambda_src_path = "../cmd/task-api/"
-  building_path = "../"
-  lambda_code_filename = "bootstrap"
 }

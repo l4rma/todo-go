@@ -12,19 +12,41 @@ import (
 )
 
 var (
-	ErrorMethodNotAllowed string                    = "method not allowed"
-	taskRepository        repository.TaskRepository = repository.NewDynamoDBRepository()
-	taskService           service.TaskService       = service.NewTaskService(taskRepository)
+	ErrorMethodNotAllowed string = "method not allowed"
+	//taskRepository        repository.TaskRepository = repository.NewDynamoDBRepository()
+	taskRepository repository.TaskRepository = repository.NewInMemoryRepository()
+	taskService    service.TaskService       = service.NewTaskService(taskRepository)
+	handler        Handler                   = Handler{}
 )
 
-func HandleRequest(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+func HandleRequest() {
+	mux := http.NewServeMux()
+	mux.HandleFunc("GET /tasks", handler.FindAll)
+	mux.HandleFunc("POST /tasks", handler.CreateTask)
+	mux.HandleFunc("GET /task", handler.FindById)
+	mux.HandleFunc("PATCH /task", handler.UpdateTask)
+
+	log.Printf("Server started on port 8080")
+	http.ListenAndServe(":8080", mux)
+}
+
+func OldHandleRequest(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	log.Printf("Incomming %s request", request.HTTPMethod)
 
 	switch request.HTTPMethod {
 	case "GET":
 		id := request.QueryStringParameters["id"]
 
-		task, err := taskService.FindbyId(id)
+		if id == "" {
+			tasks, err := taskService.FindAll()
+			if err != nil {
+				log.Printf("Error: %v", err)
+			}
+
+			return response(200, tasks)
+		}
+
+		task, err := taskService.FindById(id)
 		if err != nil {
 			log.Printf("Error: %v", err)
 		}
