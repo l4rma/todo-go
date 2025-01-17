@@ -7,10 +7,7 @@ hello:
 confirm:
 	@echo -n 'Are you sure? [y/N] ' && read ans && [ $${ans:-N} = y ]
 
-tidy:
-	@go mod tidy
-
-build: tidy
+build:
 	@GOARCH=amd64 GOOS=linux go build -tags lambda.norpc -o ${BINARY_NAME} ${APP}
 	@echo "Created binary file ${BINARY_NAME}"
 	@#zip myLambda.zip ${BINARY_NAME}

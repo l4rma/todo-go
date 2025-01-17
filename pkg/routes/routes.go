@@ -12,12 +12,22 @@ import (
 )
 
 var (
-	ErrorMethodNotAllowed string                    = "method not allowed"
-	taskRepository        repository.TaskRepository = repository.NewDynamoDBRepository()
-	taskService           service.TaskService       = service.NewTaskService(taskRepository)
+	ErrorMethodNotAllowed string = "method not allowed"
+	//taskRepository        repository.TaskRepository = repository.NewDynamoDBRepository()
+	taskRepository repository.TaskRepository = repository.NewInMemoryRepository()
+	taskService    service.TaskService       = service.NewTaskService(taskRepository)
+	handler        Handler                   = Handler{}
 )
 
-func HandleRequest(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+func HandleRequest() {
+	mux := http.NewServeMux()
+	mux.HandleFunc("GET /tasks", handler.FindAll)
+
+	log.Printf("Server started on port 8080")
+	http.ListenAndServe(":8080", mux)
+}
+
+func OldHandleRequest(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	log.Printf("Incomming %s request", request.HTTPMethod)
 
 	switch request.HTTPMethod {
