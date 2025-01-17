@@ -77,3 +77,18 @@ resource "aws_lambda_function" "my_lambda" {
     }
   }
 }
+
+resource "null_resource" "sam_metadata_aws_lambda_function_my_lambda" {
+    triggers = {
+        resource_name = "aws_lambda_function.my_lambda"
+        resource_type = "ZIP_LAMBDA_FUNCTION"
+        original_source_code = "${local.lambda_src_path}"
+        built_output_path = "./lambda_function_payload.zip"
+    }
+}
+
+locals {
+  lambda_src_path = "../cmd/task-api/"
+  building_path = "../"
+  lambda_code_filename = "bootstrap"
+}
