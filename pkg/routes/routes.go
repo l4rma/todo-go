@@ -22,6 +22,9 @@ var (
 func HandleRequest() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /tasks", handler.FindAll)
+	mux.HandleFunc("POST /tasks", handler.CreateTask)
+	mux.HandleFunc("GET /task", handler.FindById)
+	mux.HandleFunc("PATCH /task", handler.UpdateTask)
 
 	log.Printf("Server started on port 8080")
 	http.ListenAndServe(":8080", mux)
@@ -43,7 +46,7 @@ func OldHandleRequest(request events.APIGatewayProxyRequest) (events.APIGatewayP
 			return response(200, tasks)
 		}
 
-		task, err := taskService.FindbyId(id)
+		task, err := taskService.FindById(id)
 		if err != nil {
 			log.Printf("Error: %v", err)
 		}

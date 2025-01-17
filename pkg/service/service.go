@@ -14,9 +14,10 @@ var (
 
 type TaskService interface {
 	// Validate(book *entity.Task) error
-	Create(book *entity.Task) (*entity.Task, error)
+	Create(task *entity.Task) (*entity.Task, error)
 	FindAll() ([]*entity.Task, error)
-	FindbyId(id string) (*entity.Task, error)
+	FindById(id string) (*entity.Task, error)
+	UpdateTask(task *entity.Task) (*entity.Task, error)
 	// Delete(id int64) error
 }
 
@@ -31,13 +32,18 @@ func (*service) FindAll() ([]*entity.Task, error) {
 	return taskRepo.FindAll()
 }
 
-func (*service) FindbyId(id string) (*entity.Task, error) {
+func (*service) FindById(id string) (*entity.Task, error) {
 	return taskRepo.FindById(id)
 }
 
 func (*service) Create(task *entity.Task) (*entity.Task, error) {
 	return taskRepo.Save(task)
 }
+
+func (*service) UpdateTask(task *entity.Task) (*entity.Task, error) {
+	return taskRepo.UpdateById(task)
+}
+
 func response(statusCode int, body interface{}) (events.APIGatewayProxyResponse, error) {
 	jsonBody, _ := json.Marshal(body)
 	return events.APIGatewayProxyResponse{Body: string(jsonBody), StatusCode: statusCode}, nil
